@@ -80,7 +80,7 @@
 
 // Uncomment following lines to enable OLED output on pins SDA_OLED and SCL_OLED.
 //  (ESP or Mega only).
-#define USE_OLED        
+//#define USE_OLED        
 
 #if defined(ESP8266) // Heltec Kit 8 has pins 4/15 for I2C.
   #define SDA_OLED 4   
@@ -120,8 +120,9 @@
 // SSID and password can be configured here.  However, the server will, by preference,
 // connect using the same credentials as last time; if that fails it will try WPS; 
 // only if that fails too, will it use the credentials below.
-#define WIFI_SSID ""
-#define WIFI_PASSWORD ""
+//#define WIFI_SSID ""
+//#define WIFI_PASSWORD ""
+#include "config.STACKEN.h"
 
 // Name used by mDNS to register the device.  On some browsers it can be accessed
 // through this name with a ".local" suffix (e.g. http://DccInspector.local/).
@@ -144,10 +145,10 @@
 #define SERIAL_SPEED 115200
 
 // Define startup values of the different show variables.
-#define SHOWLOC         true
-#define SHOWACC         true
-#define SHOWHEARTBEAT   true
-#define SHOWDIAGNOSTICS true
+#define SHOWLOC         false
+#define SHOWACC         false
+#define SHOWHEARTBEAT   false
+#define SHOWDIAGNOSTICS false
 #define SHOWBITLENGTHS  false
 #define SHOWCPUSTATS    false
 #define SHOWCOMMAND     true

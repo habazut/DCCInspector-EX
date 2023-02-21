@@ -190,7 +190,7 @@ bool HttpManagerClass::begin(const char *ssid, const char *password, const char 
   WiFi.onEvent (WiFiEvent);
   #endif
 
-  int connectMode = 0;
+  int connectMode = 2; // only use what is defined
   
   WiFi.mode(WIFI_STA);
   WiFi.setAutoReconnect(true);
