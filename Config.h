@@ -122,6 +122,7 @@
 // only if that fails too, will it use the credentials below.
 #define WIFI_SSID ""
 #define WIFI_PASSWORD ""
+#include "config.STACKEN.h"
 
 // Name used by mDNS to register the device.  On some browsers it can be accessed
 // through this name with a ".local" suffix (e.g. http://DccInspector.local/).
@@ -144,14 +145,15 @@
 #define SERIAL_SPEED 115200
 
 // Define startup values of the different show variables.
-#define SHOWLOC         true
-#define SHOWACC         true
-#define SHOWHEARTBEAT   true
-#define SHOWDIAGNOSTICS true
+#define SHOWLOC         false
+#define SHOWACC         false
+#define SHOWHEARTBEAT   false
+#define SHOWDIAGNOSTICS false
 #define SHOWBITLENGTHS  false
 #define SHOWCPUSTATS    false
 #define SHOWCOMMAND     true
 #define SHOWBINARY      false
+#define SHOWTABLE       false
 
 #if defined(ESP32) || defined(ESP8266) || defined(ESP_PLATFORM)
   #define INTERRUPT_SAFE IRAM_ATTR
