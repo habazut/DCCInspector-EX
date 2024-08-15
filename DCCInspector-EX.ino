@@ -188,6 +188,7 @@ bool showBitLengths = SHOWBITLENGTHS;
 bool showCpuStats = SHOWCPUSTATS;
 bool showCommand = SHOWCOMMAND;
 bool showBinary = SHOWBINARY;
+bool showTable = SHOWTABLE;
 
 byte inputPacket = 0;  // Index of next packet to be analysed in dccPacket array
 byte pktByteCount = 0;
@@ -317,7 +318,9 @@ void loop() {
       DCCStatistics.writeFullStatistics(stats, showCpuStats, showBitLengths);
       Serial.println("--");
     }
-
+    if (showTable)
+      LocoTable::dumpTable(&Serial);
+    
 // Output short version of DCC statistics to a buffer
 // for use by OLED
 #if defined(USE_OLED)
@@ -861,11 +864,12 @@ void DecodePacket(Print &output, int inputPacket, bool newPeriod) {
     
     case 4:  // Loc Function L-4-3-2-1
       if(showLoc) {
+	char str[6];
 	sbTemp.print(F(" L4321 "));
-	sbTemp.printf(BYTE_TO_BINARY_PATTERN5, BYTE_TO_BINARY5(instrByte1));
+	sprintf(str, BYTE_TO_BINARY_PATTERN5, BYTE_TO_BINARY5(instrByte1));
+	sbTemp.print(str);
       }
-      locoInfoChanged = LocoTable::updateFunc(decoderAddress, instrByte1, 0)
-	|| LocoTable::updateFunc(decoderAddress, instrByte1, 1);
+      locoInfoChanged = LocoTable::updateFunc(decoderAddress, instrByte1, 1);
       if (showCommand && locoInfoChanged)
 	sprintf(commandBuffer, "<f %d %d>", decoderAddress, 128 + (instrByte1 & 0B11111));
       break;
@@ -873,16 +877,20 @@ void DecodePacket(Print &output, int inputPacket, bool newPeriod) {
     case 5:  // Loc Function 8-7-6-5
       if (bitRead(instrByte1, 4)) {
 	if(showLoc) {
+	  char str[6];
 	  sbTemp.print(F("  8765  "));
-	  sbTemp.printf(BYTE_TO_BINARY_PATTERN4, BYTE_TO_BINARY4(instrByte1));
+	  sprintf(str, BYTE_TO_BINARY_PATTERN4, BYTE_TO_BINARY4(instrByte1));
+	  sbTemp.print(str);
 	}
 	locoInfoChanged = LocoTable::updateFunc(decoderAddress, instrByte1, 5);
 	if (showCommand && locoInfoChanged)
 	  sprintf(commandBuffer, "<f %d %d>", decoderAddress, 176 + (instrByte1 & 0B1111));
       } else {  // Loc Function 12-11-10-9
 	if(showLoc) {
+	  char str[6];
 	  sbTemp.print(F("  CBA9  "));
-	  sbTemp.printf(BYTE_TO_BINARY_PATTERN4, BYTE_TO_BINARY4(instrByte1));
+	  sprintf(str, BYTE_TO_BINARY_PATTERN4, BYTE_TO_BINARY4(instrByte1));
+	  sbTemp.print(str);
 	}
 	locoInfoChanged = LocoTable::updateFunc(decoderAddress, instrByte1, 9);
 	if (showCommand && locoInfoChanged)
@@ -1135,6 +1143,12 @@ bool processCommands() {
         Serial.print(F("show Cpu stats = "));
         Serial.println(showCpuStats);
         break;
+      case 't':
+      case 'T':
+        showTable = !showTable;
+        Serial.print(F("show table = "));
+        Serial.println(showTable);
+        break;
       case 'i':
 #if defined(USE_HTTPSERVER)
       case 'I':
@@ -1159,6 +1173,7 @@ bool processCommands() {
         Serial.println(F("h = show heartbeat toggle"));
         Serial.println(F("l = show locomotive packets toggle"));
         Serial.println(F("p = show binary Pattern"));
+        Serial.println(F("t = show table"));
         Serial.println(
             F("s = set NMRA compliance strictness "
               "(0=none,1=decoder,2=controller)"));

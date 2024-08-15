@@ -120,8 +120,8 @@
 // SSID and password can be configured here.  However, the server will, by preference,
 // connect using the same credentials as last time; if that fails it will try WPS; 
 // only if that fails too, will it use the credentials below.
-//#define WIFI_SSID ""
-//#define WIFI_PASSWORD ""
+#define WIFI_SSID ""
+#define WIFI_PASSWORD ""
 #include "config.STACKEN.h"
 
 // Name used by mDNS to register the device.  On some browsers it can be accessed
@@ -153,6 +153,7 @@
 #define SHOWCPUSTATS    false
 #define SHOWCOMMAND     true
 #define SHOWBINARY      false
+#define SHOWTABLE       false
 
 #if defined(ESP32) || defined(ESP8266) || defined(ESP_PLATFORM)
   #define INTERRUPT_SAFE IRAM_ATTR
